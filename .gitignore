@@ -1,0 +1,68 @@
+# ==============================================================================
+# Node.js & Next.js (Frontend)
+# ==============================================================================
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Next.js / Node Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Next.js telemetry & dev logs
+.next/dev/logs/
+
+# ==============================================================================
+# Python & Django (Backend)
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+kill/
+
+# Django SQLite Database & Media
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Python logs and testing
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==============================================================================
+# Environment Variables & Secrets
+# ==============================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==============================================================================
+# IDE & System Files
+# ==============================================================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

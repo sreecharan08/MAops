@@ -1,0 +1,75 @@
+===============================================================================
+                       BACKEND API DOCUMENTATION
+===============================================================================
+
+Base URL: http://localhost:8000 (default Django development server port)
+Authentication Type: JWT (JSON Web Token) via SimpleJWT
+
+-------------------------------------------------------------------------------
+1. AUTHENTICATION ENDPOINTS
+-------------------------------------------------------------------------------
+
+Endpoint: /api/auth/login/
+Method: POST
+Description: Authenticates a student using their roll number and password, 
+             returning JWT access and refresh tokens along with basic student details.
+
+Request Headers:
+  Content-Type: application/json
+
+Request Body (JSON):
+  {
+    "roll_number": "STRING (Required) - Student's roll number (used as username)",
+    "password": "STRING (Required) - Student's account password"
+  }
+
+Request Payload Example:
+  {
+    "roll_number": "21001A0501",
+    "password": "mysecurepassword"
+  }
+
+Response (HTTP 200 OK) - Success:
+  {
+    "success": true,
+    "message": "Login successful",
+    "access": "<jwt_access_token_string>",
+    "refresh": "<jwt_refresh_token_string>",
+    "student": {
+      "id": 1,
+      "name": "John Doe",
+      "roll_number": "21001A0501"
+    }
+  }
+
+Response (HTTP 401 Unauthorized) - Invalid Credentials / Validation Failure:
+  {
+    "success": false,
+    "message": "Invalid roll number or password."
+  }
+
+
+-------------------------------------------------------------------------------
+2. ADMINISTRATIVE ENDPOINTS
+-------------------------------------------------------------------------------
+
+Endpoint: /admin/
+Method: GET, POST
+Description: Django default admin interface for managing database models 
+             (Users, StudentProfiles, etc.).
+
+
+-------------------------------------------------------------------------------
+3. DATA MODELS REFERENCE
+-------------------------------------------------------------------------------
+
+Model: StudentProfile (App: accounts)
+Description: One-to-One relationship extending Django's built-in User model.
+Fields:
+  - user (OneToOneField to django.contrib.auth.models.User, CASCADE)
+  - roll_number (CharField, max_length=30, unique=True)
+  - department (CharField, max_length=100)
+  - year (PositiveIntegerField)
+  - section (CharField, max_length=20)
+
+===============================================================================
