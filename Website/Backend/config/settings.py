@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "corsheaders",
 
     "accounts",
-    "submissions"
+    "submissions",
+    "analysis"
 ]
 
 MIDDLEWARE = [
@@ -160,4 +161,6 @@ SIMPLE_JWT = {
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+QUARANTINE_ROOT = BASE_DIR / "quarantine"
+QUARANTINE_ROOT.mkdir(parents=True, exist_ok=True)
 
