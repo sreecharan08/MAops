@@ -47,6 +47,19 @@ export default function SubmissionUpload({
         "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
         "application/zip",
+        "application/x-zip-compressed",
+        "application/zip-compressed",
+        "application/x-zip",
+        "application/octet-stream",
+    ];
+
+    const allowedExtensions = [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".ppt",
+        ".pptx",
+        ".zip",
     ];
 
     const maxSize = 25 * 1024 * 1024;
@@ -61,7 +74,11 @@ export default function SubmissionUpload({
             return false;
         }
 
-        if (!allowedTypes.includes(selectedFile.type)) {
+        const ext = "." + selectedFile.name.split(".").pop()?.toLowerCase();
+        const isValidExt = allowedExtensions.includes(ext);
+        const isValidType = !selectedFile.type || allowedTypes.includes(selectedFile.type);
+
+        if (!isValidExt && !isValidType) {
             setError(
                 "Only PDF, DOC, DOCX, PPT, PPTX and ZIP files are allowed."
             );
@@ -71,6 +88,7 @@ export default function SubmissionUpload({
 
         return true;
     };
+
 
     const selectFile = (selectedFile: File) => {
 
@@ -260,12 +278,24 @@ export default function SubmissionUpload({
                                 "Your session has expired. Please sign in again."
                             );
                         } else {
-                            setError(
-                                response.errors?.file?.[0] ||
-                                response.message ||
-                                response.detail ||
-                                "Upload failed."
-                            );
+                            let errMsg = "Upload failed.";
+
+                            if (response.errors) {
+                                if (typeof response.errors === "string") {
+                                    errMsg = response.errors;
+                                } else if (typeof response.errors === "object") {
+                                    const firstKey = Object.keys(response.errors)[0];
+                                    const val = response.errors[firstKey];
+                                    const msgText = Array.isArray(val) ? val[0] : String(val);
+                                    errMsg = `${firstKey.replace('_', ' ')}: ${msgText}`;
+                                }
+                            } else if (response.message) {
+                                errMsg = response.message;
+                            } else if (response.detail) {
+                                errMsg = response.detail;
+                            }
+
+                            setError(errMsg);
                         }
 
                     } catch {
@@ -275,6 +305,7 @@ export default function SubmissionUpload({
                         );
                     }
                 }
+
 
             };
 
